@@ -1,9 +1,8 @@
 <?php
-// On se connecte à la base. Si ça plante, on arrête tout.
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=quizzeo_db", "root", "Abdellahi00@");
+    $pdo = new PDO("mysql:localhost=127.0.0.1;dbname=quizzeo_db;charset=utf8", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (Exception $e) {
-    die("Erreur BDD : " . $e->getMessage());
+    die("Erreur : " . $e->getMessage());
 }
 ?>
