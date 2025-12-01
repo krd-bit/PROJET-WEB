@@ -1,0 +1,14 @@
+/* Charte graphique simple et propre */
+body { font-family: sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; }
+nav { background-color: #9b8cce; padding: 15px; color: white; display: flex; justify-content: space-between; }
+nav a { color: white; text-decoration: none; font-weight: bold; margin-left: 15px; }
+.container { width: 80%; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
+h1, h2 { color: #9b8cce; }
+input, select, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
+.btn { background-color: #f4aeb4; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 20px; font-size: 16px; }
+.btn:hover { background-color: #e0989e; }
+.alert { background: #f6d87d; padding: 10px; margin-bottom: 10px; border-radius: 5px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #9b8cce; color: white; }
+.card { border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 5px solid #f6d87d; }
