@@ -9,11 +9,24 @@ if (isset($_POST['ok'])) {
     if ($_POST['captcha'] != ($_SESSION['nb1'] + $_SESSION['nb2'])) {
         $error = "Mauvais calcul !";
     } else {
-        $sql = "INSERT INTO users (email, password, role, company_name) VALUES (?, ?, ?, ?)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$_POST['email'], password_hash($_POST['mdp'], PASSWORD_DEFAULT), $_POST['role'], $_POST['nom']]);
-        header("Location: connexion.php");
-        exit();
+        try {
+            // On essaie d'inscrire l'utilisateur
+            $sql = "INSERT INTO users (email, password, role, company_name) VALUES (?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_POST['email'], password_hash($_POST['mdp'], PASSWORD_DEFAULT), $_POST['role'], $_POST['nom']]);
+            
+            // Si ça marche, on redirige
+            header("Location: connexion.php");
+            exit();
+
+        } catch (PDOException $e) {
+            // Si l'erreur est le code 23000 (Doublon), c'est que l'email existe déjà
+            if ($e->getCode() == 23000) {
+                $error = "Cet email est déjà utilisé. Connectez-vous !";
+            } else {
+                $error = "Erreur : " . $e->getMessage();
+            }
+        }
     }
 }
 ?>
@@ -23,7 +36,9 @@ if (isset($_POST['ok'])) {
 <body>
 <div class="container">
     <h1>Inscription Quizzeo</h1>
-    <?php if(isset($error)) echo "<div class='alert'>$error</div>"; ?>
+    
+    <?php if(isset($error)) echo "<div class='alert' style='background:#f8d7da; color:#721c24;'>$error</div>"; ?>
+    
     <form method="post">
         <input type="text" name="nom" placeholder="Nom (École/Entreprise/Vous)" required>
         <input type="email" name="email" placeholder="Email" required>
