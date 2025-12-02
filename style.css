@@ -1,14 +1,67 @@
-/* Charte graphique simple et propre */
-body { font-family: sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; }
-nav { background-color: #9b8cce; padding: 15px; color: white; display: flex; justify-content: space-between; }
-nav a { color: white; text-decoration: none; font-weight: bold; margin-left: 15px; }
-.container { width: 80%; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
-h1, h2 { color: #9b8cce; }
-input, select, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
-.btn { background-color: #f4aeb4; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 20px; font-size: 16px; }
-.btn:hover { background-color: #e0989e; }
-.alert { background: #f6d87d; padding: 10px; margin-bottom: 10px; border-radius: 5px; color: #555; }
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-th { background-color: #9b8cce; color: white; }
-.card { border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 5px solid #f6d87d; }
+:root {
+    --purple: #9b8cce;
+    --pink: #f4aeb4;
+    --yellow: #f6d87d;
+    --dark: #4a4a4a;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f9;
+    color: var(--dark);
+    margin: 0;
+}
+
+nav {
+    background-color: var(--purple);
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
+nav a:hover { opacity: 0.8; }
+
+.container {
+    width: 90%; max-width: 800px; margin: 40px auto;
+    background: white; padding: 30px; border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+input, select, textarea {
+    width: 100%; padding: 12px; margin: 8px 0 20px 0;
+    border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;
+}
+
+.btn {
+    background-color: var(--pink); color: white; padding: 12px 25px;
+    border: none; border-radius: 50px; cursor: pointer;
+    font-size: 16px; font-weight: bold; text-decoration: none; display: inline-block;
+    transition: transform 0.2s;
+}
+.btn:hover { transform: scale(1.05); background-color: #e0989e; }
+
+.card {
+    border: 1px solid #eee; padding: 20px; margin-bottom: 15px;
+    border-radius: 12px; border-left: 5px solid var(--yellow);
+    background: #fff;
+}
+.alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+
+/* --- LE NOUVEAU LOGO --- */
+.logo-brand {
+    font-family: 'Verdana', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    background: white; /* Petit fond blanc pour faire ressortir */
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+.l-q { color: var(--purple); }
+.l-z { color: var(--pink); } /* Le Rose demandé */
+.l-o { color: var(--yellow); }

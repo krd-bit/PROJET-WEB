@@ -2,29 +2,27 @@
 session_start();
 require 'db.php';
 
-// SÉCURITÉ : Si pas d'ID de quiz, on renvoie au dashboard
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: dashboard_prof.php");
-    exit();
-}
-
+if (!isset($_GET['id'])) { header("Location: dashboard_prof.php"); exit(); }
 $quiz_id = $_GET['id'];
 $msg = "";
 
 if (isset($_POST['add'])) {
-    // 1. On insère la question
-    $stmt = $pdo->prepare("INSERT INTO questions (quiz_id, question_text, points) VALUES (?, ?, ?)");
-    $stmt->execute([$quiz_id, $_POST['question'], $_POST['points']]);
+    $type = $_POST['type_question']; // 'qcm' ou 'libre'
+
+    // 1. On insère la question avec son TYPE
+    $stmt = $pdo->prepare("INSERT INTO questions (quiz_id, question_text, points, type) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$quiz_id, $_POST['question'], $_POST['points'], $type]);
     $q_id = $pdo->lastInsertId();
 
-    // 2. On insère la BONNE réponse (is_correct = 1)
-    $stmt = $pdo->prepare("INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)");
-    $stmt->execute([$q_id, $_POST['bonne_rep'], 1]);
+    // 2. Si c'est un QCM, on ajoute les choix
+    if ($type == 'qcm') {
+        $stmt = $pdo->prepare("INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)");
+        $stmt->execute([$q_id, $_POST['bonne_rep'], 1]);
+        $stmt->execute([$q_id, $_POST['mauvaise_rep'], 0]);
+    }
+    // Si c'est 'libre', on n'ajoute pas de choix dans la table choices
 
-    // 3. On insère la MAUVAISE réponse (is_correct = 0)
-    $stmt->execute([$q_id, $_POST['mauvaise_rep'], 0]);
-
-    $msg = "Question ajoutée !";
+    $msg = "Question ($type) ajoutée !";
 }
 ?>
 
@@ -34,24 +32,34 @@ if (isset($_POST['add'])) {
 <body>
 <div class="container">
     <h2>Ajouter une question</h2>
-    <?php if($msg) echo "<div class='alert'>$msg</div>"; ?>
+    <?php if($msg) echo "<div class='alert' style='background:#d4edda; color:green;'>$msg</div>"; ?>
     
     <form method="post">
-        <label>Question :</label>
-        <input type="text" name="question" required>
-        <label>Points :</label>
-        <input type="number" name="points" value="1" style="width:50px">
-        
-        <label style="color:green">Bonne réponse :</label>
-        <input type="text" name="bonne_rep" required>
-        
-        <label style="color:red">Mauvaise réponse :</label>
-        <input type="text" name="mauvaise_rep" required>
+        <label>Type de question :</label>
+        <select name="type_question">
+            <option value="qcm">QCM (Choix multiples)</option>
+            <option value="libre">Réponse Libre (Texte)</option>
+        </select>
 
-        <button type="submit" name="add" class="btn">Enregistrer la question</button>
+        <label>Question :</label>
+        <input type="text" name="question" placeholder="Posez votre question..." required>
+        
+        <label>Points :</label>
+        <input type="number" name="points" value="1" style="width:60px">
+        
+        <div style="background:#f9f9f9; padding:10px; border:1px solid #ddd; margin-top:10px;">
+            <strong>Uniquement pour QCM :</strong>
+            <label style="color:green">Bonne réponse :</label>
+            <input type="text" name="bonne_rep" placeholder="Réponse correcte">
+            
+            <label style="color:red">Mauvaise réponse :</label>
+            <input type="text" name="mauvaise_rep" placeholder="Réponse fausse">
+        </div>
+
+        <button type="submit" name="add" class="btn">Enregistrer</button>
     </form>
     <br>
-    <a href="dashboard_prof.php" class="btn" style="background:#555">Terminer et Retour</a>
+    <a href="publier_quiz.php?id=<?php echo $quiz_id; ?>" class="btn" style="background:#555">Terminer et Mettre en ligne</a>
 </div>
 </body>
 </html>
